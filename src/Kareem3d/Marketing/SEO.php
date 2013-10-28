@@ -110,6 +110,6 @@ class SEO extends Model {
      */
     public function url()
     {
-        return $this->belongsTo('Kareem3d\URL\URL');
+        return $this->belongsTo(App::make('Kareem3d\URL\URL')->getClass());
     }
 }
