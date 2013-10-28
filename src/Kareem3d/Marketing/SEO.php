@@ -1,5 +1,6 @@
 <?php namespace Kareem3d\Marketing;
 
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\View;
 use Kareem3d\Eloquent\Model;
 use Kareem3d\URL\URL;
@@ -51,6 +52,20 @@ class SEO extends Model {
     );
 
     /**
+     * @param $value
+     * @return mixed
+     */
+    public function setUrlAttribute( $value )
+    {
+        if(is_object($value) and
+            get_class($value) == App::make('Kareem3d\URL\URL')->getClass())
+
+            return $this->url()->save($value);
+
+        $this->url()->associate(App::make('Kareem3d\URL\URL')->create(array('url' => $value)));
+    }
+
+    /**
      * @return string
      */
     public function toHtml()
@@ -84,7 +99,7 @@ class SEO extends Model {
     public static function getCurrent()
     {
         // Get current url and get the seo linked to it
-        return static::getByUrl(URL::getCurrent());
+        return static::getByUrl(App::make('Kareem3d\URL\URL')->getCurrent());
     }
 
     /**
