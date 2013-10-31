@@ -12,7 +12,7 @@ class CreateSeoTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('seo', function(Blueprint $table)
+		Schema::create('ka_seo', function(Blueprint $table)
 		{
 			$table->increments('id');
 
@@ -21,7 +21,7 @@ class CreateSeoTable extends Migration {
             $table->text('description');
 
             $table->integer('url_id')->unsigned();
-            $table->foreign('url_id')->references('id')->on('urls')->onDelete('CASCADE');
+            $table->foreign('url_id')->references('id')->on('ka_urls')->onDelete('CASCADE');
 
 			$table->timestamps();
 		});
@@ -34,7 +34,7 @@ class CreateSeoTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('seo');
+		Schema::drop('ka_seo');
 	}
 
 }
