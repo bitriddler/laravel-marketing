@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\View;
 use Kareem3d\Eloquent\Model;
+use Kareem3d\Link\Link;
 use Kareem3d\URL\URL;
 
 class SEO extends Model {
@@ -21,11 +22,11 @@ class SEO extends Model {
     public function setUrlAttribute( $value )
     {
         if(is_object($value) and
-            get_class($value) == App::make('Kareem3d\URL\URL')->getClass())
+            get_class($value) == App::make('Kareem3d\Link\Link')->getClass())
 
-            return $this->url()->save($value);
+            return $this->link()->save($value);
 
-        $this->url()->associate(App::make('Kareem3d\URL\URL')->create(array('url' => $value)));
+        return $this->Link()->associate(App::make('Kareem3d\Link\Link')->create(array('url' => $value)));
     }
 
     /**
@@ -42,9 +43,9 @@ class SEO extends Model {
      */
     public static function createOrUpdate( $inputs )
     {
-        if(! isset($inputs['url_id'])) return null;
+        if(! isset($inputs['link_id'])) return null;
 
-        if($seo = static::getByUrlId($inputs['url_id']))
+        if($seo = static::getByLinkId($inputs['link_id']))
         {
             $seo->update($inputs);
 
@@ -57,37 +58,28 @@ class SEO extends Model {
     }
 
     /**
-     * @return SEO|null
-     */
-    public static function getCurrent()
-    {
-        // Get current url and get the seo linked to it
-        return static::getByUrl(App::make('Kareem3d\URL\URL')->getCurrent());
-    }
-
-    /**
-     * @param URL $url
+     * @param \Kareem3d\Link\Link $link
      * @return SEO
      */
-    public static function getByUrl( URL $url )
+    public static function getByLink( Link $link )
     {
-        return static::getByUrlId($url->id);
+        return static::getByLinkId($link->id);
     }
 
     /**
      * @param $id
      * @return SEO
      */
-    public static function getByUrlId( $id )
+    public static function getByLinkId( $id )
     {
-        return static::where('url_id', $id)->first();
+        return static::where('link_id', $id)->first();
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function url()
+    public function link()
     {
-        return $this->belongsTo(App::make('Kareem3d\URL\URL')->getClass());
+        return $this->belongsTo(App::make('Kareem3d\Link\Link')->getClass());
     }
 }

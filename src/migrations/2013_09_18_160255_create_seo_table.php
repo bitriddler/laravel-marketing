@@ -20,8 +20,8 @@ class CreateSeoTable extends Migration {
             $table->text('keywords');
             $table->text('description');
 
-            $table->integer('url_id')->unsigned();
-            $table->foreign('url_id')->references('id')->on('ka_urls')->onDelete('CASCADE');
+            $table->integer('link_id')->unsigned();
+            $table->foreign('link_id')->references('id')->on('ka_links')->onDelete('CASCADE');
 
 			$table->timestamps();
 		});
