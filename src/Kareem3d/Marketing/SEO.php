@@ -16,10 +16,15 @@ class SEO extends Model {
     protected $table = 'ka_seo';
 
     /**
+     * @var array
+     */
+    protected static $dontDuplicate = array('link_id');
+
+    /**
      * @param $value
      * @return mixed
      */
-    public function setUrlAttribute( $value )
+    public function setLinkAttribute( $value )
     {
         if(is_object($value) and
             get_class($value) == App::make('Kareem3d\Link\Link')->getClass())
